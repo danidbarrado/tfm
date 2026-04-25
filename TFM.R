@@ -1,5 +1,5 @@
 #   fdi_NI.xls
-#   API_FP_CPI_TOTL_ZG_DS2_en_excel_v2_207080.xls   (Inflation)
+#   API_FP_CPI_TOTL_ZG_DS2_en_excel_v2_207080.xls    (Inflation)
 #   API_NY_GDP_MKTP_KD_ZG_DS2_en_excel_v2_29.xls    (GDP growth)
 #   API_NE_TRD_GNFS_ZS_DS2_en_excel_v2_37.xls       (Trade openness)
 #   ert_bil_eur_m__custom_20843966_spreadsheet.xlsx  (Bilateral EUR)
@@ -484,16 +484,13 @@ panel_plm$er_vol_lag <- lag(panel_plm$er_vol, 1)
 
 # --- Hausman test: fixed vs random effects ----------------------
 fe <- plm(fdi ~ er_vol + gdp_growth + inflation + trade_open,
-          data  = panel_plm,
-          model = "within")
+          data = panel_plm, model = "within", effect = "twoways")
 
 re <- plm(fdi ~ er_vol + gdp_growth + inflation + trade_open,
-          data  = panel_plm,
-          model = "random")
+          data = panel_plm, model = "random", effect = "twoways")
 
 cat("--- Hausman test ---\n")
 print(phtest(fe, re))
-# conclusion: p-value < 0.05 → reject random effects → use fixed effects (within estimator)
 
 # --- Equation 1: contemporaneous ERV ----------------------------
 cat("\n--- Equation 1: current ERV ---\n")
@@ -516,3 +513,4 @@ print(coeftest(eq2, vcov = vcovHC(eq2, type = "HC3")))
 cat("\n--- R-squared comparison ---\n")
 cat("Equation 1 R²:", round(summary(eq1)$r.squared[1], 4), "\n")
 cat("Equation 2 R²:", round(summary(eq2)$r.squared[1], 4), "\n")
+
