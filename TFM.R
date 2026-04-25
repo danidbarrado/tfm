@@ -1,9 +1,9 @@
 #   fdi_NI.xls
-#   API_FP_CPI_TOTL_ZG_DS2_en_excel_v2_207080.xls    (Inflation)
-#   API_NY_GDP_MKTP_KD_ZG_DS2_en_excel_v2_29.xls    (GDP growth)
-#   API_NE_TRD_GNFS_ZS_DS2_en_excel_v2_37.xls       (Trade openness)
-#   ert_bil_eur_m__custom_20843966_spreadsheet.xlsx  (Bilateral EUR)
-#   ert_eff_ic_m__custom_20843983_page_spreadsheet.xlsx (NEER)
+#   API_FP_CPI_TOTL_ZG_DS2_en_excel_v2_207080.xls renamed to Inf_CP.xls (Inflation)
+#   API_NY_GDP_MKTP_KD_ZG_DS2_en_excel_v2_29.xls renamed to GDP_Growth.xls (GDP growth)
+#   API_NE_TRD_GNFS_ZS_DS2_en_excel_v2_37.xls renamed to Trade_GDP.xls (Trade openness)
+#   ert_bil_eur_m__custom_20843966_spreadsheet.xlsx renamed to Bilat_EUR.xlsx (Bilateral EUR)
+#   ert_eff_ic_m__custom_20843983_page_spreadsheet.xlsx renamed to NEER.xlsx (NEER)
 # ================================================================
 
 # install.packages(c("tidyverse","readxl","plm","lmtest","sandwich"))
