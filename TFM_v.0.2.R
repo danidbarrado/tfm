@@ -6,7 +6,7 @@
 #   ert_eff_ic_m__custom_20843983_page_spreadsheet.xlsx renamed to NEER.xlsx (NEER)
 # ================================================================
 
-# install.packages(c("tidyverse","readxl","plm","lmtest","sandwich"))
+install.packages(c("tidyverse","readxl","plm","lmtest","sandwich"))
 
 library(tidyverse)
 library(readxl)
@@ -37,55 +37,12 @@ theme_set(theme_minimal(base_size = 13))
 col_euro    <- "#1D9E75"
 col_noneuro <- "#BA7517"
 
-
-# ================================================================
-# HELPER: parse Eurostat wide-format export
-# ================================================================
-# Both Eurostat files share the same layout:
-#   Rows 1-8  : metadata
-#   Row 9     : dates in columns 2, 4, 6, ... (odd positions, 1-based)
-#   Row 10    : label header
-#   Row 11+   : data — col 1 = name, same odd columns = values
-
-parse_eurostat_wide <- function(path, sheet = "Sheet 1") {
-  
-  raw <- read_excel(path, sheet = sheet,
-                    col_names = FALSE, col_types = "text")
-  
-  # Dates are in odd-indexed columns of row 9 (YYYY-MM format)
-  date_row <- as.character(unlist(raw[9, ]))
-  date_idx <- which(grepl("^\\d{4}-\\d{2}$", date_row))
-  dates    <- date_row[date_idx]
-  
-  # Data starts at row 11; col 1 = name, value cols = same as date_idx
-  data_rows <- raw |>
-    slice(-(1:10)) |>
-    filter(!is.na(...1))
-  
-  name_col  <- data_rows[[1]]
-  value_mat <- data_rows[, date_idx]
-  colnames(value_mat) <- dates
-  
-  bind_cols(name = name_col, value_mat) |>
-    filter(!name %in% c("Special value", ":", "")) |>
-    pivot_longer(cols      = -name,
-                 names_to  = "month",
-                 values_to = "value") |>
-    mutate(month = as.Date(paste0(month, "-01")),
-           year  = as.integer(format(month, "%Y")),
-           value = suppressWarnings(as.numeric(value))) |>
-    filter(!is.na(value),
-           year >= YEAR_START,
-           year <= YEAR_END)
-}
-
-
 # ================================================================
 # PART 1: FDI DATA (World Bank)
 # ================================================================
 
 fdi_raw <- read_excel("fdi_NI.xls", sheet = "Data", skip = 3)
-names(fdi_raw)[1:4] <- c("country_name","country_code",
+  names(fdi_raw)[1:4] <- c("country_name","country_code",
                          "indicator_name","indicator_code")
 
 fdi <- fdi_raw %>%
